@@ -1,21 +1,24 @@
 import React, { useState } from 'react';
-import { Eye, EyeOff, Loader2 } from 'lucide-react';
+import { Eye, EyeOff, Loader2, NutIcon } from 'lucide-react';
 import "./index.css"
+import { signIn, signUp } from './lib/auth';
 
 export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [userData, setUserData] = useState<{}>()
-  async function onSubmit(event: React.FormEvent) {
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  async function onSubmit(event: React.SubmitEvent) {
     event.preventDefault();
     setIsLoading(true);
-
+    console.log({"email":email,"password":password})
     // Simulate API call
+    const result = await signIn.email({ email , password})
     setTimeout(() => {
       setIsLoading(false);
     }, 2000);
+    console.log(result)
   }
-
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50/50 px-4 py-12 sm:px-6 lg:px-8">
       {/* Card Container */}
@@ -49,6 +52,9 @@ export default function LoginPage() {
                 Email
               </label>
               <input
+              onChange={(e)=>{
+                setEmail(e.target.value)
+              }}
                 id="email"
                 name="email"
                 type="email"
@@ -74,6 +80,9 @@ export default function LoginPage() {
               </div>
               <div className="relative">
                 <input
+                onChange={(e)=>{
+                  setPassword(e.target.value)
+                }}
                   id="password"
                   name="password"
                   type={showPassword ? "text" : "password"}
